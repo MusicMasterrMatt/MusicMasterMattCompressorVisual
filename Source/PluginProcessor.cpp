@@ -99,12 +99,17 @@ void MusicMasterMattCompressorVisualAudioProcessor::prepareToPlay (double sample
         spec.maximumBlockSize = samplesPerBlock;
 
      compressor.prepare(spec);
-     compressor.reset(); // Use this method as the place to do any pre-playback
+    ; // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    const int numInputerChannels = getTotalNumInputChannels();
+    const int compressorBufferSize = 2 * (sampleRate * samplesPerBlock);
+    mCompressorBuffer.setSize(numInputerChannels, compressorBufferSize);
 }
 
 void MusicMasterMattCompressorVisualAudioProcessor::releaseResources()
 {
+    
+    compressor.reset();
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }

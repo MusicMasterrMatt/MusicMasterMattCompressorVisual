@@ -57,6 +57,8 @@ public:
 private:
    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
     
+    juce::AudioBuffer<float> mCompressorBuffer;
+    
     juce::dsp::Compressor<float> compressor;
     
     

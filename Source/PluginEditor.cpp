@@ -16,9 +16,10 @@ MusicMasterMattCompressorVisualAudioProcessorEditor::MusicMasterMattCompressorVi
    ThresholdSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
    ThresholdSlider.setTextBoxStyle(juce::Slider::TextBoxAbove, true, 50, 25);
    ThresholdSlider.setRange(-60, 0, 0.25);
-   ThresholdSlider.setValue(0);//set the defualt setting
+   ThresholdSlider.setValue(-20);//set the defualt setting
    addAndMakeVisible(ThresholdSlider);
-   
+    
+ 
    ThresholdSliderAttatchment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.apvts, "THRESHOLD", ThresholdSlider);
    
   RatioSlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
@@ -61,8 +62,53 @@ MusicMasterMattCompressorVisualAudioProcessorEditor::~MusicMasterMattCompressorV
 void MusicMasterMattCompressorVisualAudioProcessorEditor::paint (juce::Graphics& g)
 {
    // (Our component is opaque, so we must completely fill the background with a solid colour)
-   g.fillAll (juce::Colours::grey);
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+
+    g.setColour (juce::Colours::gold);
+    g.setFont (14.0f);
+    
+    g.fillAll (juce::Colours::darkgrey);
+    
+    //goldenrod for dial  darkgoldenrod
+    auto bounds = getLocalBounds();
+
+    {
+    g.drawFittedText ("AMusicMasterMattCompressor", bounds.removeFromTop (450), juce::Justification::bottomRight, 600);
+    }
+    // changed variable name to bounds 2 in order to add more words
+    auto bounds2 = getLocalBounds();
+    {
+    
+    g.setColour (juce::Colours::gold);
+    g.setFont (14.0f);
+    g.drawFittedText ("Ratio", bounds2.removeFromLeft (474), juce::Justification::centred, 1);
    
+    }
+    auto bounds3 = getLocalBounds();
+    {
+    
+    g.setColour (juce::Colours::gold);
+    g.setFont (14.0f);
+    g.drawFittedText ("Release", bounds3.removeFromRight (204), juce::Justification::centred, 1);
+   
+    }
+    auto bounds4 = getLocalBounds();
+    {
+    
+    g.setColour (juce::Colours::gold);
+    g.setFont (14.0f);
+    g.drawFittedText ("Attack", bounds4.removeFromRight (465), juce::Justification::centred, 1);
+   
+    }
+    auto bounds5 = getLocalBounds();
+    {
+    
+    g.setColour (juce::Colours::gold);
+    g.setFont (14.0f);
+    g.drawFittedText ("Threshold", bounds5.removeFromLeft (216), juce::Justification::centred, 1);
+   
+    }
+
 }
 
 void MusicMasterMattCompressorVisualAudioProcessorEditor::resized()
@@ -73,9 +119,10 @@ void MusicMasterMattCompressorVisualAudioProcessorEditor::resized()
    // This is generally where you'll want to lay out the positions of any
    // subcomponents in your editor..
     // x, y , width, height
-    ThresholdSlider.setBounds(10, 150, 180, 130);
-    RatioSlider.setBounds(10, 300, 180, 130);
-    AttackSlider.setBounds(150, 150, 180, 130);
-    ReleaseSlider.setBounds(150, 300, 180, 130);
+    ThresholdSlider.setBounds(10, 150, 200, 130);
+    RatioSlider.setBounds(140, 150, 200, 130);
+    AttackSlider.setBounds(270, 150, 200, 130);
+    ReleaseSlider.setBounds(400, 150, 200, 130);
+    
 }
 
