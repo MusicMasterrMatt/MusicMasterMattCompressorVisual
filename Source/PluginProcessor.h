@@ -13,12 +13,14 @@
 //==============================================================================
 /**
 */
-class MusicMasterMattCompressorVisualAudioProcessor  : public juce::AudioProcessor
+class MusicMasterMattCompressorVisualAudioProcessor : public juce::AudioProcessor,
+public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
     MusicMasterMattCompressorVisualAudioProcessor();
     ~MusicMasterMattCompressorVisualAudioProcessor() override;
+    
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -52,14 +54,25 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-  juce::AudioProcessorValueTreeState apvts;
+    
+    juce::AudioProcessorValueTreeState apvts;
+    
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    
+
+    
 
 private:
-   juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    
+    juce::dsp::Compressor<float> compressor;
     
     juce::AudioBuffer<float> mCompressorBuffer;
     
-    juce::dsp::Compressor<float> compressor;
+    std::atomic<float> *threshold, *ratio, *attack, *release;
+    
+   
+  
     
     
     
