@@ -22,6 +22,15 @@ MusicMasterMattCompressorVisualAudioProcessor::MusicMasterMattCompressorVisualAu
                        ), apvts(*this, nullptr, "Parameter", createParameters())
 #endif
 {
+    threshold = apvts.getRawParameterValue("THRESHOLD");
+    ratio = apvts.getRawParameterValue("RATIO");
+    attack = apvts.getRawParameterValue("ATTACK");
+    release = apvts.getRawParameterValue("RELEASE");
+    
+    apvts.addParameterListener("THRESHOLD", this);
+    apvts.addParameterListener("RATIO", this);
+    apvts.addParameterListener("ATTACK", this);
+    apvts.addParameterListener("RELEASE", this);
 }
 
 MusicMasterMattCompressorVisualAudioProcessor::~MusicMasterMattCompressorVisualAudioProcessor()
@@ -99,7 +108,11 @@ void MusicMasterMattCompressorVisualAudioProcessor::prepareToPlay (double sample
         spec.maximumBlockSize = samplesPerBlock;
 
      compressor.prepare(spec);
-    ; // Use this method as the place to do any pre-playback
+
+   
+
+    
+    // Use this method as the place to do any pre-playback
     // initialisation that you need..
     const int numInputerChannels = getTotalNumInputChannels();
     const int compressorBufferSize = 2 * (sampleRate * samplesPerBlock);
@@ -108,8 +121,8 @@ void MusicMasterMattCompressorVisualAudioProcessor::prepareToPlay (double sample
 
 void MusicMasterMattCompressorVisualAudioProcessor::releaseResources()
 {
-    
     compressor.reset();
+    
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
@@ -225,3 +238,14 @@ MusicMasterMattCompressorVisualAudioProcessor::createParameters()
     
     return { params.begin(), params.end() };
 }
+
+void MusicMasterMattCompressorVisualAudioProcessor::parameterChanged
+(const juce::String& parameterID, float newValue)
+{
+    compressor.setThreshold(*threshold);
+    compressor.setRatio(*ratio);
+    compressor.setAttack(*attack);
+    compressor.setRelease(*release);
+    //etc. for all of your parameters
+};
+
